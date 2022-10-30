@@ -13,16 +13,15 @@ export const globalStyles = globalCss({
 
 export const { styled, css } = createStitches({
   theme: {
+    /**
+     * COLOR TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     colors: {
-      /**
-       * BASELINE COLOR TOKENS
-       * The core visual principles like your palette, font or spacing scale are defined here.
-       * We use the baseline tokens only as references inside system & component tokens.
-       * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
-       * We recommend to not apply these tokens directly to your UI elements.
-       */
-
-      // Grey palette
+      // grey
       "grey-100": "#fff",
       "grey-200": "#f5f5f4",
       "grey-300": "#e7e5e4",
@@ -34,7 +33,7 @@ export const { styled, css } = createStitches({
       "grey-900": "#292524",
       "grey-1000": "#1C1917",
 
-      // Primary palette
+      // primary
       "primary-100": "#d1f0fc",
       "primary-200": "#a4ddf9",
       "primary-300": "#74bfee",
@@ -46,7 +45,19 @@ export const { styled, css } = createStitches({
       "primary-900": "#052160",
       "primary-1000": "#031130",
 
-      // Info palette
+      // secondary
+      "secondary-100": "#FEEBF4",
+      "secondary-200": "#FDD7EC",
+      "secondary-300": "#FAC2E7",
+      "secondary-400": "#F6B0E4",
+      "secondary-500": "#F096E2",
+      "secondary-600": "#CE6DC8",
+      "secondary-700": "#A94BAC",
+      "secondary-800": "#7F2F8B",
+      "secondary-900": "#601C73",
+      "secondary-1000": "#220A29",
+
+      // info
       "info-100": "#d1f0fc",
       "info-200": "#a4ddf9",
       "info-300": "#74bfee",
@@ -58,7 +69,7 @@ export const { styled, css } = createStitches({
       "info-900": "#000000",
       "info-1000": "#000000",
 
-      // Success palette
+      // succes
       "success-100": "#d4f8dc",
       "success-200": "#abf2c2",
       "success-300": "#79daa3",
@@ -70,7 +81,7 @@ export const { styled, css } = createStitches({
       "success-900": "#053738",
       "success-1000": "#032021",
 
-      // Warning palette
+      // warning
       "warning-100": "#fdf1cc",
       "warning-200": "#fbe09a",
       "warning-300": "#f3c666",
@@ -82,7 +93,7 @@ export const { styled, css } = createStitches({
       "warning-900": "#5b2901",
       "warning-1000": "#321701",
 
-      // Danger palette
+      // danger
       "danger-100": "#fde2d4",
       "danger-200": "#fbc0a9",
       "danger-300": "#f3937d",
@@ -94,7 +105,7 @@ export const { styled, css } = createStitches({
       "danger-900": "#560621",
       "danger-1000": "#300312",
 
-      // Elevation palette
+      // elevation
       "elevation-0": "rgba(28, 25, 23, 0)",
       "elevation-10": "rgba(28, 25, 23, 0.10)",
       "elevation-15": "rgba(28, 25, 23, 0.15)",
@@ -112,15 +123,7 @@ export const { styled, css } = createStitches({
       "elevation-75": "rgba(28, 25, 23, 0.75)",
       transparent: "rgba(0, 0, 0, 0)",
 
-      /**
-       * SYSTEM COLORS TOKENS
-       * These tokens help define particular meaning and rules for the usage of baseline tokens,
-       * which are defined above.
-       */
-
-      /** -----------------------------------
-       ** @sys SURFACE COLORS TOKENS
-       ** --------------------------------- */
+      // surfaces
       "surface-background": "$grey-200",
       "surface-basline": "$grey-100",
       "surface-foreground": "$grey-200",
@@ -128,9 +131,9 @@ export const { styled, css } = createStitches({
       "surface-neutral-solid": "$grey-800",
       "surface-neutral-faded": "$grey-200",
       "surface-primary-solid": "$primary-500",
-      "surface-primary-faded": "$primary-100",
-      "surface-selected-solid": "$primary-500",
-      "surface-selected-faded": "$primary-100",
+      "surface-primary-faded": "$primary-200",
+      "surface-selected-solid": "$secondary-500",
+      "surface-selected-faded": "$secondary-100",
       "surface-info-solid": "$primary-500",
       "surface-info-faded": "$primary-100",
       "surface-success-solid": "$success-500",
@@ -140,13 +143,11 @@ export const { styled, css } = createStitches({
       "surface-danger-solid": "$danger-500",
       "surface-danger-faded": "$danger-100",
 
-      /** -----------------------------------
-       ** @sys TINT COLORS TOKENS
-       ** --------------------------------- */
+      // tints
       "tint-primary": "$grey-1000",
       "tint-secondary": "$grey-600",
       "tint-action": "$primary-500",
-      "tint-selected": "$primary-200",
+      "tint-selected": "$secondary-200",
       "tint-danger": "$danger-500",
       "tint-on-dark": "$grey-200",
       "tint-on-neutral-solid": "$grey-100",
@@ -164,29 +165,21 @@ export const { styled, css } = createStitches({
       "tint-on-danger-solid": "$grey-100",
       "tint-on-danger-faded": "$danger-600",
 
-      /** -----------------------------------
-       ** @sys BORDER COLOR TOKENS
-       ** --------------------------------- */
+      // borders
       "border-none": "$transparent",
-      "border-regular": "$grey-400",
-      "border-selected": "$primary-500",
+      "border-regular": "$grey-1000",
+      "border-selected": "$secondary-500",
 
-      /** -----------------------------------
-       ** @comp BUTTON COLOR TOKENS
-       ** --------------------------------- */
-
-      // Solid buttons
+      // button
       "button-primary-solid-background": "$surface-primary-solid",
       "button-primary-solid-tint": "$tint-on-primary-solid",
-      "button-primary-solid-border": "$border-none",
+      "button-primary-solid-border": "$border-regular",
       "button-neutral-solid-background": "$surface-neutral-solid",
       "button-neutral-solid-tint": "$tint-on-neutral-solid",
-      "button-neutral-solid-border": "$border-none",
+      "button-neutral-solid-border": "$border-regular",
       "button-danger-solid-background": "$surface-danger-solid",
       "button-danger-solid-tint": "$tint-on-danger-solid",
-      "button-danger-solid-border": "$border-none",
-
-      // Outlined buttons
+      "button-danger-solid-border": "$border-regular",
       "button-primary-outlined-background": "$surface-transparent",
       "button-primary-outlined-tint": "$tint-on-primary-faded",
       "button-primary-outlined-border": "$border-regular",
@@ -196,44 +189,92 @@ export const { styled, css } = createStitches({
       "button-danger-outlined-background": "$surface-transparent",
       "button-danger-outlined-tint": "$tint-on-danger-faded",
       "button-danger-outlined-border": "$border-regular",
-
-      // Ghost buttons
       "button-primary-ghost-background": "$surface-transparent",
       "button-primary-ghost-tint": "$tint-on-primary-faded",
-      "button-primary-ghost-border": "$border-none",
+      "button-primary-ghost-border": "$border-regular",
       "button-neutral-ghost-background": "$surface-transparent",
       "button-neutral-ghost-tint": "$tint-on-neutral-faded",
-      "button-neutral-ghost-border": "$border-none",
+      "button-neutral-ghost-border": "$border-regular",
       "button-danger-ghost-background": "$surface-transparent",
       "button-danger-ghost-tint": "$tint-on-danger-faded",
-      "button-danger-ghost-border": "$border-none",
+      "button-danger-ghost-border": "$border-regular",
+
+      // input
+      "input-background": "$surface-baseline",
+      "input-tint": "$tint-primary",
+      "input-border": "$border-regular",
+      "input-cursor": "$tint-selected",
     },
+
+    /**
+     * FONT TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     fonts: {
-      "theme-font": "Inter, apple-system, sans-serif", // ADD TO FIGMA TOKENS
-      "button-font-family": "$theme-font", // ADD TO FIGMA TOKENS
+      // base
+      base: "Inter, apple-system, sans-serif",
+
+      // button
+      button: "$base",
     },
+
+    /**
+     * FONT-SIZE TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     fontSizes: {
-      "caption-1": "10px", // ADD TO FIGMA TOKENS
-      "caption-2": "12px", // ADD TO FIGMA TOKENS
-      "body-2": "14px", // ADD TO FIGMA TOKENS
-      "body-1": "16px", // ADD TO FIGMA TOKENS
-      "button-sm-font-size": "$body-2", // ADD TO FIGMA TOKENS
-      "button-md-font-size": "$body-2", // ADD TO FIGMA TOKENS
+      // base
+      "caption-1": "10px",
+      "caption-2": "12px",
+      "body-1": "14px",
+      "body-2": "16px",
+      "button-sm": "$body-1",
+      "button-md": "$body-1",
     },
+
+    /**
+     * SPACE TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     space: {
+      // base
       1: "4px",
       2: "8px",
       3: "12px",
       4: "16px",
       5: "20px",
 
-      // Buttons paddings
-      "button-sm-paddingY": "$1", // RENAMED: "small" => "sm"
-      "button-sm-paddingX": "$3", // RENAMED: "small" => "sm"
-      "button-md-paddingY": "$2", // ADD TO FIGMA TOKENS
-      "button-md-paddingX": "$4", // ADD TO FIGMA TOKENS
+      // button
+      "button-sm-paddingY": "$2",
+      "button-sm-paddingX": "$3",
+      "button-md-paddingY": "$2",
+      "button-md-paddingX": "$4",
+
+      // input
+      "input-sm-paddingY": "$1",
+      "input-sm-paddingX": "$2",
+      "input-md-paddingY": "$1",
+      "input-md-paddingX": "$2",
     },
+
+    /**
+     * RADIUS TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     radii: {
+      // base
       xs: "4px",
       sm: "8px",
       md: "12px",
@@ -241,53 +282,156 @@ export const { styled, css } = createStitches({
       xl: "24px",
       round: "999px",
 
-      // Buttons radiuses
-      "button-sm-container": "$round", // RENAMED: "small" => "sm"
-      "button-md-container": "$round", // ADD TO FIGMA TOKENS
+      // button
+      "button-sm": "$round",
+      "button-md": "$round",
+
+      // input
+      "input-sm": "$xs",
+      "input-md": "$xs",
     },
+
+    /**
+     * FONT-WEIGHT TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     fontWeights: {
-      400: "$regular",
-      500: "$medium",
-      600: "$strong",
-      "button-font-weight": "$medium", // ADD TO FIGMA TOKENS
+      // base
+      regular: 400,
+      medium: 500,
+      strong: 600,
+
+      // button
+      button: "$medium",
     },
+
+    /**
+     * ✅ LINE-HEIGHT TOKENS
+     * These tokens are assignable to the "lineHeight" property. The line-height property sets the height of a line box.
+     * It's commonly used to set the distance between lines of text.
+     */
     lineHeights: {},
+
+    /**
+     * ✅ LETTER-SPACING TOKENS
+     * These tokens are assignable to the "letterSpacing" property. It lets you sets the horizontal spacing behavior
+     * between text characters. This value is added to the natural spacing between characters while rendering the text.
+     */
     letterSpacings: {},
+
+    /**
+     * SIZE TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     sizes: {
-      // Button sizes
-      "button-sm-height": "36px", // RENAMED: "small" => "sm"
-      "button-md-height": "40px", // ADD TO FIGMA TOKENS
+      /**
+       * button size tokens
+       */
+      "button-sm-height": "36px",
+      "button-md-height": "40px",
+      "input-sm-height": "36px",
+      "input-md-height": "40px",
     },
+
+    /**
+     * BORDER-WIDTH TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     borderWidths: {
-      // Button border-wdiths
-      "button-solid-border-width": 0, // ADD TO FIGMA TOKENS
-      "button-outlined-border-width": 1, // ADD TO FIGMA TOKENS
-      "button-ghost-border-width": 0, // ADD TO FIGMA TOKENS
+      /**
+       * button border-width tokens
+       */
+      "button-solid": "1px",
+      "button-outlined": "1px",
+      "button-ghost": "1px",
+
+      /**
+       * input border-width tokens
+       */
+      input: "1px",
     },
+
+    /**
+     * BORDER-STYLE TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     borderStyles: {
-      // Button border-styles
-      "button-solid-border-style": "solid", // ADD TO FIGMA TOKENS
-      "button-outlined-border-style": "solid", // ADD TO FIGMA TOKENS
-      "button-ghost-border-style": "solid", // ADD TO FIGMA TOKENS
+      "button-solid": "solid",
+      "button-outlined": "solid",
+      "button-ghost": "solid",
+      input: "solid",
     },
+
+    /**
+     * SHADOW TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     shadows: {
-      // Button shadows
-      "button-focus-shadow": "0 0 0 3px rgba(29, 117, 200, 0.3)",
-      "button-focus-visible-shadow": "0 0 0 3px rgba(29, 117, 200, 1)",
+      /**
+       * button shadow tokens
+       */
+      "button-hover": "3px 3px 0 0 $colors$border-regular",
+      "button-focus-visible": "0 0 0 3px $colors$surface-selected-solid",
+
+      /**
+       * input shadow tokens
+       */
+      "input-hover": "3px 3px 0 0 $colors$border-regular",
+      "input-focus":
+        "0 0 0 3px $colors$surface-selected-solid, inset 3px 3px 0px $colors$elevation-10",
     },
+
+    /**
+     * Z-INDEX TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     zIndices: {},
+
+    /**
+     * TRANSITION TOKENS
+     * The core visual principles like your palette, font or spacing scale are defined here.
+     * We use the baseline tokens only as references inside system & component tokens.
+     * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+     * We recommend to not apply these tokens directly to your UI elements.
+     */
     transitions: {
-      "animation-speed-fast": "0.15s", // ADD TO FIGMA TOKENS
-      "animation-speed-regular": "0.3s", // ADD TO FIGMA TOKENS
+      fast: "all 150ms", // ADD TO FIGMA TOKENS
+      regular: "all 300ms", // ADD TO FIGMA TOKENS
     },
   },
+
+  /**
+   * STITCHES CUSTOM PROPERTIES a.k.a "utils"
+   * The core visual principles like your palette, font or spacing scale are defined here.
+   * We use the baseline tokens only as references inside system & component tokens.
+   * Baseline tokens are also the only level of token abstraction where you define raw, hard-coded values.
+   * We recommend to not apply these tokens directly to your UI elements.
+   */
   utils: {
-    paddingY: (value: Stitches.ScaleValue<"space">) => ({
+    paddingY: (value: any) => ({
       paddingTop: value,
       paddingBottom: value,
     }),
 
-    paddingX: (value: Stitches.ScaleValue<"space">) => ({
+    paddingX: (value: any) => ({
       paddingLeft: value,
       paddingRight: value,
     }),
@@ -300,7 +444,6 @@ export const { styled, css } = createStitches({
       left: 0,
       right: 0,
       bottom: 0,
-      opacity: 0.25,
       backgroundColor: value,
     }),
   },

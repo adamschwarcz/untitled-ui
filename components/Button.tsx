@@ -11,27 +11,37 @@ const StyledButton = styled("button", {
   transform: "perspective(0)",
   overflow: "hidden",
   cursor: "pointer",
-  fontFamily: "$button-font-family",
-  fontWeight: "$button-font-weight",
+  borderColor: "$button-border",
+  fontFamily: "$button",
+  fontWeight: "$button",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   outline: "none",
+  transition: "$regular",
 
   // The "overlay" is an extra layer that is presented in front of the
   // button's container. The overlay property is a custom stitches util
   // which can be found in the stitches.config.ts in the root directory
   "&::before": {
     display: "none",
+    opacity: 0.25,
     overlay: "currentColor",
   },
 
+  // When you hover your mouse over the button
   "&:hover::before": {
     display: "block",
   },
 
-  "&:focus": {
-    borderColor: "$border-none",
-    boxShadow: "$button-focus-shadow",
+  "&:hover": {
+    transform: "translate(-4px, -4px)",
+    boxShadow: "$button-hover",
+  },
+
+  // When you select buttons via keyboard
+  "&:focus-visible": {
+    boxShadow: "$button-focus-visible",
+    transition: "none",
   },
 
   /** ---------------------------------------------------------------------
@@ -43,16 +53,19 @@ const StyledButton = styled("button", {
   variants: {
     variant: {
       solid: {
-        borderWidth: "$button-solid-border-width",
-        borderStyle: "$button-solid-border-style",
+        borderWidth: "$button-solid",
+        borderStyle: "$button-solid",
       },
       outlined: {
-        borderWidth: "$button-outlined-border-width",
-        borderStyle: "$button-outlined-border-style",
+        borderWidth: "$button-outlined",
+        borderStyle: "$button-outlined",
       },
       ghost: {
-        borderWidth: "$button-ghost-border-width",
-        borderStyle: "$button-ghost-border-style",
+        borderWidth: "$button-ghost",
+        borderStyle: "$button-ghost",
+        "&:not(:hover)": {
+          borderColor: "$border-none",
+        },
       },
     },
     color: {
@@ -69,15 +82,15 @@ const StyledButton = styled("button", {
         height: "$button-sm-height",
         paddingY: "$button-sm-paddingY",
         paddingX: "$button-sm-paddingX",
-        fontSize: "$button-sm-font-size",
-        borderRadius: "$button-sm-container",
+        fontSize: "$button-sm",
+        borderRadius: "$button-sm",
       },
       md: {
         height: "$button-md-height",
         paddingY: "$button-md-paddingY",
         paddingX: "$button-md-paddingX",
-        fontSize: "$button-md-font-size",
-        borderRadius: "$button-md-container",
+        fontSize: "$button-md",
+        borderRadius: "$button-md",
       },
     },
   },
@@ -159,7 +172,7 @@ const StyledButton = styled("button", {
       css: {
         background: "$button-primary-ghost-background",
         color: "$button-primary-ghost-tint",
-        borderColor: "$button-primary-ghost-border",
+        borderColor: "$button-danger-ghost-border",
       },
     },
     {
