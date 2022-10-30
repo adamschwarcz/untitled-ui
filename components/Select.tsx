@@ -1,4 +1,10 @@
-import React, { ReactNode, useState, useRef } from "react";
+import React, {
+  ReactNode,
+  useState,
+  useRef,
+  useCallback,
+  Children,
+} from "react";
 import type * as Stitches from "@stitches/react";
 import { motion } from "framer-motion";
 import { styled } from "../tokens/stitches.config";
@@ -142,6 +148,7 @@ export const Select: React.FC<SelectProps> = ({
   placeholder,
   defaultValue,
   size,
+  onBlur,
   ...props
 }) => {
   /**
@@ -149,9 +156,9 @@ export const Select: React.FC<SelectProps> = ({
    */
   const [value, setValue] = useState(defaultValue || "");
   const [open, setOpen] = useState(false);
-  const [focus, setFocus] = useArrowKeyFocus(children.length);
-  
-  const ref = useRef(null);
+  const [focus, setFocus] = useArrowKeyFocus(Children.count(children));
+  const [isFocusInElement, setIsFocusInElement] = useState(false);
+  const dropdownRef = useRef(null);
 
   /**
    * This handler helps us open the dropdown
@@ -159,9 +166,9 @@ export const Select: React.FC<SelectProps> = ({
   const handleClick = () => setOpen(true);
 
   /**
-   * This handler helps us close the dropdown
+   * This handler helps us open the dropdown
    */
-  const handleBlur = () => setOpen(false);
+  const handleClose = () => setOpen(false);
 
   /**
    * This handler helps us toggle the dropdown via key press
@@ -186,7 +193,7 @@ export const Select: React.FC<SelectProps> = ({
    * us close menu upon clicking outside of the menu.
    */
   const handleClickAway = () => setOpen(false);
-  useClickAwayListener(ref, handleClickAway);
+  useClickAwayListener(dropdownRef, handleClickAway);
 
   /**
    * This is where we define corresponding animation states for our
@@ -222,6 +229,45 @@ export const Select: React.FC<SelectProps> = ({
     },
   };
 
+  const handleBlur = useCallback(
+    (e: any) => {
+      const currentTarget = e.currentTarget;
+
+      // Give browser time to focus the next element
+      requestAnimationFrame(() => {
+        // Check if the new focused element is a child of the original container
+        if (!currentTarget.contains(document.activeElement)) {
+          onBlur();
+        }
+      });
+    },
+    [onBlur]
+  );
+
+  // ----- The main component
+  const ChildrenBlur = ({ children, onBlur, ...props }) => {
+    const handleBlur = useCallback(
+      (e) => {
+        const currentTarget = e.currentTarget;
+
+        // Give browser time to focus the next element
+        requestAnimationFrame(() => {
+          // Check if the new focused element is a child of the original container
+          if (!currentTarget.contains(document.activeElement)) {
+            onBlur();
+          }
+        });
+      },
+      [onBlur]
+    );
+
+    return (
+      <div {...props} onBlur={handleBlur}>
+        {children}
+      </div>
+    );
+  };
+
   return (
     <SelectContext.Provider value={{ value, onChange: handleChange }}>
       <StyledSelect
@@ -229,8 +275,9 @@ export const Select: React.FC<SelectProps> = ({
         open={open}
         onKeyPress={handleKeyPress}
         onClick={handleClick}
-        //onBlur={handleBlur}
         tabIndex={0}
+        onBlur={() => setIsFocusInElement(false)}
+        onFocus={() => setIsFocusInElement(true)}
         {...props}
       >
         <motion.div variants={select} animate={open ? "open" : "closed"}>
@@ -239,10 +286,19 @@ export const Select: React.FC<SelectProps> = ({
         <motion.ul
           variants={dropdown}
           animate={open ? "open" : "closed"}
-          ref={ref}
+          ref={dropdownRef}
         >
           <Option placeholder>{placeholder}</Option>
-          {children}
+          <ChildrenBlur onBlur={() => setIsFocusInElement(false)}>
+            {React.Children.map(children, (child: any, index) =>
+              React.cloneElement(child, {
+                key: index,
+                setFocus: setFocus,
+                index: index,
+                focus: focus === index,
+              })
+            )}
+          </ChildrenBlur>
         </motion.ul>
       </StyledSelect>
     </SelectContext.Provider>

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import type * as Stitches from "@stitches/react";
 import { styled } from "../tokens/stitches.config";
 
@@ -63,20 +63,76 @@ interface OptionProps extends Stitches.VariantProps<typeof StyledOption> {
   /**
    * Lets you set option items using <Option> component via child nodes
    */
-  children: ReactNode;
+  children?: string;
 
   /**
    * Configures the value
    */
   value?: string;
+
+  /**
+   * TOOD: Add description here
+   */
+  label?: string;
+
+  /**
+   * TOOD: Add description here
+   */
+  focus?: boolean;
+
+  /**
+   * TOOD: Add description here
+   */
+  open?: boolean;
+
+  /**
+   * TOOD: Add description here
+   */
+  index?: any;
+
+  /**
+   * TOOD: Add description here
+   */
+  setFocus?: any;
 }
 
 /**
  * Interactive element used for single-step actions.
  */
-export const Option: React.FC<OptionProps> = ({ children, ...props }) => {
+export const Option: React.FC<OptionProps> = ({
+  index,
+  focus,
+  setFocus,
+  children,
+  placeholder,
+  open,
+  ...props
+}) => {
+  const ref = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (focus) {
+      if (ref.current != null) {
+        ref.current?.focus();
+      }
+    }
+  }, [focus, open]);
+
+  const handleSelect = useCallback(() => {
+    if (placeholder != true) {
+      setFocus(index);
+    }
+  }, [placeholder, index, setFocus]);
+
   return (
-    <StyledOption tabIndex={0} {...props}>
+    <StyledOption
+      ref={ref}
+      tabIndex={placeholder ? -1 : 0}
+      placeholder={placeholder}
+      onClick={handleSelect}
+      onKeyPress={handleSelect}
+      {...props}
+    >
       {children}
     </StyledOption>
   );
