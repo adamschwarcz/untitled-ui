@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import type * as Stitches from "@stitches/react";
 import { styled } from "../tokens/stitches.config";
+import { useSelectContext } from "../hooks/useSelectContext";
 
 const StyledOption = styled("li", {
   /** ---------------------------------------------------------------------
@@ -18,6 +19,7 @@ const StyledOption = styled("li", {
   fontSize: "$body-1",
   fontWeight: "$regular",
   color: "$input-tint",
+  outline: "none",
 
   /** ---------------------------------------------------------------------
    ** VARIANTS:
@@ -28,6 +30,7 @@ const StyledOption = styled("li", {
   variants: {
     placeholder: {
       true: {
+        boxSizing: "border-box",
         opacity: 0.4,
         borderColor: "$border-regular",
         borderBottomWidth: "1px",
@@ -43,7 +46,7 @@ const StyledOption = styled("li", {
         },
 
         "&:focus": {
-          outline: "3px solid blue",
+          backgroundColor: "$surface-selected-faded",
         },
       },
     },
@@ -105,10 +108,12 @@ export const Option: React.FC<OptionProps> = ({
   setFocus,
   children,
   placeholder,
+  value,
   open,
   ...props
 }) => {
   const ref = useRef<HTMLLIElement>(null);
+  const { changeValue } = useSelectContext();
 
   useEffect(() => {
     if (focus) {
@@ -121,13 +126,14 @@ export const Option: React.FC<OptionProps> = ({
   const handleSelect = useCallback(() => {
     if (placeholder != true) {
       setFocus(index);
+      changeValue(value);
     }
-  }, [placeholder, index, setFocus]);
+  }, [changeValue, value, placeholder, index, setFocus]);
 
   return (
     <StyledOption
       ref={ref}
-      tabIndex={placeholder ? -1 : 0}
+      tabIndex={focus ? 0 : -1}
       placeholder={placeholder}
       onClick={handleSelect}
       onKeyPress={handleSelect}

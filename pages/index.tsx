@@ -85,9 +85,9 @@ const Home: NextPage = () => {
         <div className={styles.vstack}>
           <TextField size="sm" placeholder="Type something in" />
           <Select size="sm" placeholder="Select an option">
-            <Option>Option 1</Option>
-            <Option>Option 2</Option>
-            <Option>Option 3</Option>
+            <Option value="Option 1">Option 1</Option>
+            <Option value="Option 2">Option 2</Option>
+            <Option value="Option 3">Option 3</Option>
           </Select>
         </div>
       </div>
@@ -96,9 +96,9 @@ const Home: NextPage = () => {
         <div className={styles.vstack}>
           <TextField size="md" placeholder="Type something in" />
           <Select placeholder="Select an option">
-            <Option>Option 1</Option>
-            <Option>Option 2</Option>
-            <Option>Option 3</Option>
+            <Option value="Option 1">Option 1</Option>
+            <Option value="Option 2">Option 2</Option>
+            <Option value="Option 3">Option 3</Option>
           </Select>
         </div>
       </div>

@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react";
 
 const SelectContext = createContext<{
-  value: string;
-  onChange: (option: string) => void;
+  value?: string;
+  changeValue: (value: string) => void;
 }>({
   value: "",
-  onChange: (option: string) => {},
+  changeValue: (value: string) => {},
 });
 
 const useSelectContext = () => {

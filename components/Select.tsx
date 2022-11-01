@@ -1,17 +1,11 @@
-import React, {
-  ReactNode,
-  useState,
-  useRef,
-  useCallback,
-  Children,
-} from "react";
+import React, { ReactNode, useState, Children } from "react";
 import type * as Stitches from "@stitches/react";
-import { motion } from "framer-motion";
-import { styled } from "../tokens/stitches.config";
-import { useClickAwayListener } from "../hooks/useClickAwayListener";
 import { useArrowKeyFocus } from "../hooks/useArrowKeyFocus";
 import { SelectContext } from "../hooks/useSelectContext";
+import { SelectDropdown } from "./SelectDropdown";
 import { Option } from "./Option";
+import { motion } from "framer-motion";
+import { styled } from "../tokens/stitches.config";
 
 const StyledSelect = styled("div", {
   /** ---------------------------------------------------------------------
@@ -55,22 +49,6 @@ const StyledSelect = styled("div", {
     outline: "none",
   },
 
-  // This is where we style the "motion.ul" element that acts
-  // as the drodpown container in the UI
-  "& ul": {
-    position: "absolute",
-    overflow: "hidden",
-    marginTop: "$2",
-    padding: 0,
-    width: "100%",
-    backgroundColor: "$surface-basline",
-    borderRadius: "$xs",
-    borderColor: "$border-regular",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    outline: "3px solid white",
-  },
-
   /** ---------------------------------------------------------------------
    ** VARIANTS:
    ** These styles are applied globally if a specific variant is
@@ -101,7 +79,13 @@ const StyledSelect = styled("div", {
       },
     },
     open: {
-      true: {},
+      true: {
+        "& div": {
+          // NOTE: We would need to come to a different solution
+          // than forcing this style through !important
+          boxShadow: "$input-focus !important",
+        },
+      },
       false: {},
     },
   },
@@ -137,18 +121,20 @@ interface SelectProps extends Stitches.VariantProps<typeof StyledSelect> {
    * Sets preselected value
    */
   defaultValue?: string;
+  /**
+   * Add
+   */
+  value?: string;
 }
 
 /**
  * Select lets you choose a single value from a list of options.
  */
-
 export const Select: React.FC<SelectProps> = ({
   children,
   placeholder,
   defaultValue,
   size,
-  onBlur,
   ...props
 }) => {
   /**
@@ -157,8 +143,6 @@ export const Select: React.FC<SelectProps> = ({
   const [value, setValue] = useState(defaultValue || "");
   const [open, setOpen] = useState(false);
   const [focus, setFocus] = useArrowKeyFocus(Children.count(children));
-  const [isFocusInElement, setIsFocusInElement] = useState(false);
-  const dropdownRef = useRef(null);
 
   /**
    * This handler helps us open the dropdown
@@ -166,40 +150,40 @@ export const Select: React.FC<SelectProps> = ({
   const handleClick = () => setOpen(true);
 
   /**
-   * This handler helps us open the dropdown
+   * This handler helps us change the selected value and reflect the change
+   * in the component's local state.
    */
-  const handleClose = () => setOpen(false);
+  const handleChange = (value: string) => {
+    setValue(value);
+    setOpen(!open);
+  };
 
   /**
    * This handler helps us toggle the dropdown via key press
    */
-  const handleKeyPress = (event: any) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key === "Enter") {
       setOpen(!open);
     }
   };
 
   /**
-   * This handler helps us change the selected value and reflect the change
-   * in the component's local state.
+   * Add description here.
    */
-  const handleChange = (option: string) => {
-    setValue(option);
-    setOpen(false);
+  const handleBlur = (event: React.FocusEvent<HTMLElement>) => {
+    const currentTarget = event.currentTarget;
+    requestAnimationFrame(() => {
+      if (!currentTarget.contains(document.activeElement)) {
+        setOpen(false);
+      }
+    });
   };
-
-  /**
-   * This handler together with the custom useClickAway hook helps
-   * us close menu upon clicking outside of the menu.
-   */
-  const handleClickAway = () => setOpen(false);
-  useClickAwayListener(dropdownRef, handleClickAway);
 
   /**
    * This is where we define corresponding animation states for our
    * select element and apply different styles per each state.
    */
-  const select = {
+  const variants = {
     closed: {
       scale: 1,
     },
@@ -208,98 +192,51 @@ export const Select: React.FC<SelectProps> = ({
     },
   };
 
-  /**
-   * This is where we define corresponding animation states for our
-   * dropdown element and apply different styles per each state.
-   */
-  const dropdown = {
-    closed: {
-      y: 25,
-      opacity: 0,
-      transition: {
-        duration: 0.15,
-      },
-    },
-    open: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        opacity: { duration: 0.1 },
-      },
-    },
-  };
-
-  const handleBlur = useCallback(
-    (e: any) => {
-      const currentTarget = e.currentTarget;
-
-      // Give browser time to focus the next element
-      requestAnimationFrame(() => {
-        // Check if the new focused element is a child of the original container
-        if (!currentTarget.contains(document.activeElement)) {
-          onBlur();
-        }
-      });
-    },
-    [onBlur]
-  );
-
-  // ----- The main component
-  const ChildrenBlur = ({ children, onBlur, ...props }) => {
-    const handleBlur = useCallback(
-      (e) => {
-        const currentTarget = e.currentTarget;
-
-        // Give browser time to focus the next element
-        requestAnimationFrame(() => {
-          // Check if the new focused element is a child of the original container
-          if (!currentTarget.contains(document.activeElement)) {
-            onBlur();
-          }
-        });
-      },
-      [onBlur]
-    );
-
-    return (
-      <div {...props} onBlur={handleBlur}>
-        {children}
-      </div>
-    );
-  };
-
+  // TODO: Comment this component whole component also the sections above
   return (
-    <SelectContext.Provider value={{ value, onChange: handleChange }}>
+    <SelectContext.Provider value={{ value, changeValue: handleChange }}>
+      {/**
+       * StyledSelect is the overarching wrapper, which consumes the main props
+       * related to the component's state, size etc. The individual UI elements like
+       * the field container or the dropdown are nested inside. You can recognize them by their id values.
+       */}
       <StyledSelect
         size={size}
         open={open}
         onKeyPress={handleKeyPress}
-        onClick={handleClick}
+        onBlur={handleBlur}
         tabIndex={0}
-        onBlur={() => setIsFocusInElement(false)}
-        onFocus={() => setIsFocusInElement(true)}
         {...props}
       >
-        <motion.div variants={select} animate={open ? "open" : "closed"}>
-          {value.length > 0 ? value : placeholder}
-        </motion.div>
-        <motion.ul
-          variants={dropdown}
+        {/**
+         * This is the field container, which on the UI you see as the actual select field
+         * that users interact with. It is also a motion.component which means you can define
+         * it's animation behaviour via the variants or animate prop.
+         */}
+        <motion.div
+          id="field-container"
+          variants={variants}
           animate={open ? "open" : "closed"}
-          ref={dropdownRef}
+          onClick={handleClick}
         >
+          {value.length > 0 ? (
+            <span id="field-value">{open ? "true" : "false"}</span>
+          ) : (
+            <span id="field-placeholder">{placeholder}</span>
+          )}
+        </motion.div>
+
+        <SelectDropdown open={open}>
           <Option placeholder>{placeholder}</Option>
-          <ChildrenBlur onBlur={() => setIsFocusInElement(false)}>
-            {React.Children.map(children, (child: any, index) =>
-              React.cloneElement(child, {
-                key: index,
-                setFocus: setFocus,
-                index: index,
-                focus: focus === index,
-              })
-            )}
-          </ChildrenBlur>
-        </motion.ul>
+          {React.Children.map(children, (child: any, index) =>
+            React.cloneElement(child, {
+              key: index,
+              setFocus: setFocus,
+              index: index,
+              focus: focus === index,
+            })
+          )}
+        </SelectDropdown>
       </StyledSelect>
     </SelectContext.Provider>
   );
