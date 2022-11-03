@@ -1,8 +1,8 @@
 import React from "react";
-import type * as Stitches from "@stitches/react";
-import { styled } from "../tokens/stitches.config";
+import { ButtonProps } from "./ButtonProps";
+import { styled } from "tokens/stitches.config";
 
-const StyledButton = styled("button", {
+export const StyledButton = styled("button", {
   /** ---------------------------------------------------------------------
    ** LOCAL COMPONENT STYLES
    ** Styles that are applied locally for this componnet, regardless of
@@ -207,20 +207,11 @@ const StyledButton = styled("button", {
   },
 });
 
-interface ButtonProps extends Stitches.VariantProps<typeof StyledButton> {
-  /**
-   * Configures the button label text
-   */
-  children?: string;
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void;
-}
-
 /**
  * Interactive element used for single-step actions.
  */
 export const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
   return <StyledButton {...props}>{children}</StyledButton>;
 };
+
+export default Button;

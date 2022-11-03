@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import { Button } from "../components/Button";
-import { Select } from "../components/Select";
-import { TextField } from "../components/TextField";
-import { Option } from "../components/Option";
+import Select from "../components/Select";
+import Button from "../components/Button";
+import TextField from "../components/TextField";
+import Option from "../components/Option";
 
 const Home: NextPage = () => {
   return (
@@ -14,11 +14,11 @@ const Home: NextPage = () => {
           <Button color="primary" size="sm">
             Primary solid
           </Button>
-          <Button color="danger" size="sm">
-            Danger solid
-          </Button>
           <Button color="neutral" size="sm">
             Neutral solid
+          </Button>
+          <Button color="danger" size="sm">
+            Danger solid
           </Button>
         </div>
         <div className={styles.hstack}>
@@ -50,11 +50,11 @@ const Home: NextPage = () => {
           <Button color="primary" size="md">
             Primary solid
           </Button>
-          <Button color="danger" size="md">
-            Danger solid
-          </Button>
           <Button color="neutral" size="md">
             Neutral solid
+          </Button>
+          <Button color="danger" size="md">
+            Danger solid
           </Button>
         </div>
         <div className={styles.hstack}>

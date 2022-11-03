@@ -1,14 +1,38 @@
-import React from "react";
-import type * as Stitches from "@stitches/react";
-import { styled } from "../tokens/stitches.config";
+import { motion } from "framer-motion";
+import { styled } from "tokens/stitches.config";
 
-const StyledInput = styled("input", {
+export const SelectContainer = styled("div", {
+  display: "flex",
+  position: "relative",
+  width: "100%",
+
+  "&:hover > div": {
+    boxShadow: "$input-hover",
+    transition: "$regular",
+  },
+
+  "&:focus > div": {
+    boxShadow: "$input-focus",
+    transition: "none",
+  },
+
+  "&:focus": {
+    outline: "none",
+  },
+});
+
+export const SelectField = styled(motion.div, {
   /** ---------------------------------------------------------------------
    ** LOCAL COMPONENT STYLES
    ** Styles that are applied locally for this componnet, regardless of
    ** any prop configuration that is passed down to the component.
    ** ----------------------------------------------------------------- */
-  width: "100%",
+
+  // These styles are passed to the child "motion.div" element that
+  // acts as the select field in the UI
+  display: "flex",
+  alignItems: "center",
+  width: "inherit",
   borderColor: "$input-border",
   borderWidth: "$input",
   borderStyle: "$input",
@@ -16,23 +40,7 @@ const StyledInput = styled("input", {
   fontSize: "$body-1",
   fontWeight: "$regular",
   color: "$input-tint",
-  outline: "none",
-  transition: "$regular",
-
-  // This is where we define the styling of a component during
-  // different interaction states like focus, hover or active
-  "&::placeholder": {
-    opacity: 0.5,
-  },
-
-  "&:hover": {
-    boxShadow: "$input-hover",
-  },
-
-  "&:focus": {
-    boxShadow: "$input-focus",
-    transition: "none",
-  },
+  cursor: "pointer",
 
   /** ---------------------------------------------------------------------
    ** VARIANTS:
@@ -41,6 +49,9 @@ const StyledInput = styled("input", {
    ** initialize all variants to get correct typing in TypeScript.
    ** ----------------------------------------------------------------- */
   variants: {
+    /**
+     * Add prop descriptions.
+     */
     size: {
       sm: {
         height: "$input-sm-height",
@@ -55,6 +66,15 @@ const StyledInput = styled("input", {
         borderRadius: "$input-md",
       },
     },
+    /**
+     * Add prop descriptions.
+     */
+    open: {
+      true: {
+        boxShadow: "$input-focus !important",
+      },
+      false: {},
+    },
   },
 
   /** ---------------------------------------------------------------------
@@ -66,29 +86,3 @@ const StyledInput = styled("input", {
     size: "md",
   },
 });
-
-interface TextFieldProps extends Stitches.VariantProps<typeof StyledInput> {
-  /**
-   * Configures the placeholder text
-   */
-  placeholder?: string;
-  /**
-   * Configures the value text
-   */
-  value?: string;
-  /**
-   * Custom id override
-   */
-  id?: string;
-  /**
-   * Optional onChange handler
-   */
-  onChange?: () => void;
-}
-
-/**
- * Interactive element used for single-step actions.
- */
-export const TextField: React.FC<TextFieldProps> = ({ ...props }) => {
-  return <StyledInput type="text" {...props} />;
-};
